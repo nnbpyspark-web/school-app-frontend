@@ -69,7 +69,7 @@ export default function LoginPage() {
             </Button>
 
             <div className="auth-footer">
-                Don't have an account? <Link href="/auth/signup" className="auth-link">Sign up</Link>
+                Don&apos;t have an account? <Link href="/auth/signup" className="auth-link">Sign up</Link>
             </div>
         </AuthForm>
     );
