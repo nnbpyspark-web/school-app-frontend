@@ -1,5 +1,5 @@
 "use client"
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 import { createClient } from "@/utils/supabase/client"
 import { Upload, FileText, Loader2, Download, Trash2 } from "lucide-react"
 
@@ -15,11 +15,7 @@ export default function AcademicPage() {
     const [batches, setBatches] = useState<any[]>([])
     const [selectedBatch, setSelectedBatch] = useState("")
 
-    useEffect(() => {
-        fetchData()
-    }, [])
-
-    async function fetchData() {
+    const fetchData = useCallback(async () => {
         setLoading(true)
         const { data: assignmentsData } = await supabase.from('assignments').select('*, batches(name)').order('created_at', { ascending: false })
         setAssignments(assignmentsData || [])
@@ -27,7 +23,11 @@ export default function AcademicPage() {
         const { data: batchesData } = await supabase.from('batches').select('id, name')
         setBatches(batchesData || [])
         setLoading(false)
-    }
+    }, [supabase])
+
+    useEffect(() => {
+        fetchData()
+    }, [fetchData])
 
     async function handleSubmit(e: React.FormEvent) {
         e.preventDefault()

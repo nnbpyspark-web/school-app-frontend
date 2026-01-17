@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 import { createClient } from "@/utils/supabase/client"
 import { Plus } from "lucide-react"
 
@@ -12,12 +12,7 @@ export default function AnnouncementsPage() {
     const [newAnnouncement, setNewAnnouncement] = useState({ title: "", message: "", target_batch_id: "" })
     const [batches, setBatches] = useState<any[]>([])
 
-    useEffect(() => {
-        fetchAnnouncements()
-        fetchBatches()
-    }, [])
-
-    async function fetchAnnouncements() {
+    const fetchAnnouncements = useCallback(async () => {
         setLoading(true)
         const { data: { user } } = await supabase.auth.getUser()
         if (!user) return
@@ -31,12 +26,17 @@ export default function AnnouncementsPage() {
         else setAnnouncements(data || [])
 
         setLoading(false)
-    }
+    }, [supabase])
 
-    async function fetchBatches() {
+    const fetchBatches = useCallback(async () => {
         const { data } = await supabase.from('batches').select('id, name')
         setBatches(data || [])
-    }
+    }, [supabase])
+
+    useEffect(() => {
+        fetchAnnouncements()
+        fetchBatches()
+    }, [fetchAnnouncements, fetchBatches])
 
     async function handleCreate(e: React.FormEvent) {
         e.preventDefault()

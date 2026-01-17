@@ -1,5 +1,5 @@
 "use client"
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 import { createClient } from "@/utils/supabase/client"
 import { CreditCard, CheckCircle, AlertTriangle } from "lucide-react"
 
@@ -9,20 +9,7 @@ export default function BillingPage() {
     const [school, setSchool] = useState<any>(null)
     const [loading, setLoading] = useState(true)
 
-    useEffect(() => {
-        // Load Razorpay script
-        const script = document.createElement("script")
-        script.src = "https://checkout.razorpay.com/v1/checkout.js"
-        document.body.appendChild(script)
-
-        fetchSubscription()
-
-        return () => {
-            document.body.removeChild(script)
-        }
-    }, [])
-
-    async function fetchSubscription() {
+    const fetchSubscription = useCallback(async () => {
         setLoading(true)
         const { data: { user } } = await supabase.auth.getUser()
         if (!user) return
@@ -38,7 +25,20 @@ export default function BillingPage() {
             setSubscription(subData)
         }
         setLoading(false)
-    }
+    }, [supabase])
+
+    useEffect(() => {
+        // Load Razorpay script
+        const script = document.createElement("script")
+        script.src = "https://checkout.razorpay.com/v1/checkout.js"
+        document.body.appendChild(script)
+
+        fetchSubscription()
+
+        return () => {
+            document.body.removeChild(script)
+        }
+    }, [fetchSubscription])
 
     async function handleSubscribe(planId: string) {
         if (!school) return alert("No school found")

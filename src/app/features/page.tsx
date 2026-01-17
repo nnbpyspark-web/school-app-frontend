@@ -45,7 +45,7 @@ export default function FeaturesPage() {
                     <div className="hero-content">
                         <h2>Student & Batch Management</h2>
                         <p style={{ margin: '1rem 0', color: 'var(--text-muted)' }}>
-                            Organize your students into batches like "Class 10 - Science" or "Batch A".
+                            Organize your students into batches like &quot;Class 10 - Science&quot; or &quot;Batch A&quot;.
                             Keep track of their roll numbers, contact details, and academic progress in one secure place.
                         </p>
                     </div>
