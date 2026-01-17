@@ -50,7 +50,7 @@ export default function BillingPage() {
 
         try {
             // 2. Create Order
-            const res = await fetch("http://localhost:8000/api/v1/payments/create-order", {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:8000'}/api/v1/payments/create-order`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
@@ -102,7 +102,7 @@ export default function BillingPage() {
 
     async function verifyPayment(payload: any) {
         try {
-            const res = await fetch("http://localhost:8000/api/v1/payments/verify-payment", {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:8000'}/api/v1/payments/verify-payment`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(payload)

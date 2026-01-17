@@ -47,7 +47,7 @@ export default function AcademicPage() {
             const formData = new FormData()
             formData.append("file", file)
 
-            const res = await fetch("http://localhost:8000/api/v1/upload", {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:8000'}/api/v1/upload`, {
                 method: "POST",
                 headers: {
                     "Authorization": `Bearer ${session.access_token}`
